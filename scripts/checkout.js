@@ -50,9 +50,9 @@ cart.forEach((cartItem) => {
                 }">
                 Update
                 </span>
-                <input class="quantity-input js-quantity-input-${
+                <input class="quantity-input js-quantity-input js-quantity-input-${
                   matchingProduct.id
-                }">
+                }" data-product-id="${matchingProduct.id}">
                 <span class="save-quantity-link js-save-quantity-link link-primary" data-product-id="${
                   matchingProduct.id
                 }">Save</span>
@@ -182,3 +182,13 @@ function saveNewQuantity(productId) {
     cartItemElm.classList.remove("is-editing-quantity");
   }
 }
+
+document.querySelectorAll(".js-quantity-input").forEach((link) => {
+  link.addEventListener("keydown", (event) => {
+    const { productId } = link.dataset;
+    if (event.key === "Enter") {
+      saveNewQuantity(productId);
+      updateCartQuantity();
+    }
+  });
+});
