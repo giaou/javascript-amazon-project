@@ -1,4 +1,9 @@
-import { calculateCartQuantity, cart, removeFromCart } from "../data/cart.js";
+import {
+  calculateCartQuantity,
+  cart,
+  removeFromCart,
+  updateQuantity,
+} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -36,16 +41,18 @@ cart.forEach((cartItem) => {
             </div>
             <div class="product-quantity">
                 <span>
-                Quantity: <span class="quantity-label">${
-                  cartItem.quantity
-                }</span>
+                Quantity: <span class="quantity-label js-quantity-label-${
+                  matchingProduct.id
+                }">${cartItem.quantity}</span>
                 </span>
                 <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id="${
                   matchingProduct.id
                 }">
                 Update
                 </span>
-                <input class="quantity-input">
+                <input class="quantity-input js-quantity-input-${
+                  matchingProduct.id
+                }">
                 <span class="save-quantity-link js-save-quantity-link link-primary" data-product-id="${
                   matchingProduct.id
                 }">Save</span>
@@ -139,7 +146,6 @@ document.querySelectorAll(".js-update-quantity-link").forEach((link) => {
 
     //add .is-editing-quantity to container element
     cartItemElm.classList.add("is-editing-quantity");
-    link.classList.add("is-editing-quantity");
   });
 });
 
@@ -147,8 +153,32 @@ document.querySelectorAll(".js-save-quantity-link").forEach((link) => {
   link.addEventListener("click", () => {
     const { productId } = link.dataset;
 
-    console.log(productId);
+    const newQuantity = Number(
+      document.querySelector(`.js-quantity-input-${productId}`).value
+    );
 
-    
+    //remove element UI first then remove in database
+    if (newQuantity === 0) {
+      const container = document.querySelector(
+        `.js-cart-item-container-${productId}`
+      );
+      container.remove();
+      updateQuantity(productId, newQuantity);
+    } else {
+      updateQuantity(productId, newQuantity);
+      //update quantity label
+      if (0 < newQuantity && newQuantity < 1000) {
+        document.querySelector(`.js-quantity-label-${productId}`).innerHTML =
+          newQuantity;
+      }
+      //remove isEdittingquantityclass
+      const cartItemElm = document.querySelector(
+        `.js-cart-item-container-${productId}`
+      );
+      cartItemElm.classList.remove("is-editing-quantity");
+    }
+
+    //update checkmark - the number of items in the header of the top
+    updateCartQuantity();
   });
 });
