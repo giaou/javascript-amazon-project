@@ -14,6 +14,8 @@ function saveToStorage() {
 }
 
 export function addToCart(productId) {
+  const selectorElm = document.querySelector(`.js-selector-${productId}`);
+  let itemQuantity = Number(selectorElm.value);
   let matchingItem;
 
   cart.forEach((item) => {
@@ -23,15 +25,24 @@ export function addToCart(productId) {
   });
 
   if (matchingItem) {
-    matchingItem.quantity += 1;
+    matchingItem.quantity += itemQuantity;
   } else {
     cart.push({
       productId: productId,
-      quantity: 1,
+      quantity: itemQuantity,
     });
   }
 
   saveToStorage();
+}
+
+export function calculateCartQuantity() {
+  let cartQuantity = 0;
+  //calculate total of the cart
+  cart.forEach((item) => {
+    cartQuantity += item.quantity;
+  });
+  return cartQuantity;
 }
 
 export function removeFromCart(productId) {
