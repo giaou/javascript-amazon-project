@@ -153,32 +153,59 @@ document.querySelectorAll(".js-save-quantity-link").forEach((link) => {
   link.addEventListener("click", () => {
     const { productId } = link.dataset;
 
-    const newQuantity = Number(
-      document.querySelector(`.js-quantity-input-${productId}`).value
-    );
+    // const newQuantity = Number(
+    //   document.querySelector(`.js-quantity-input-${productId}`).value
+    // );
 
-    //remove element UI first then remove in database
-    if (newQuantity === 0) {
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`
-      );
-      container.remove();
-      updateQuantity(productId, newQuantity);
-    } else {
-      updateQuantity(productId, newQuantity);
-      //update quantity label
-      if (0 < newQuantity && newQuantity < 1000) {
-        document.querySelector(`.js-quantity-label-${productId}`).innerHTML =
-          newQuantity;
-      }
-      //remove isEdittingquantityclass
-      const cartItemElm = document.querySelector(
-        `.js-cart-item-container-${productId}`
-      );
-      cartItemElm.classList.remove("is-editing-quantity");
-    }
+    saveNewQuantity(productId);
+
+    // //remove element UI first then remove in database
+    // if (newQuantity === 0) {
+    //   const container = document.querySelector(
+    //     `.js-cart-item-container-${productId}`
+    //   );
+    //   container.remove();
+    //   updateQuantity(productId, newQuantity);
+    // } else {
+    //   updateQuantity(productId, newQuantity);
+    //   //update quantity label
+    //   if (0 < newQuantity && newQuantity < 1000) {
+    //     document.querySelector(`.js-quantity-label-${productId}`).innerHTML =
+    //       newQuantity;
+    //   }
+    //   //remove isEdittingquantityclass
+    //   const cartItemElm = document.querySelector(
+    //     `.js-cart-item-container-${productId}`
+    //   );
+    //   cartItemElm.classList.remove("is-editing-quantity");
+    // }
 
     //update checkmark - the number of items in the header of the top
     updateCartQuantity();
   });
 });
+
+function saveNewQuantity(productId) {
+  const newQuantity = Number(
+    document.querySelector(`.js-quantity-input-${productId}`).value
+  );
+  if (newQuantity === 0) {
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`
+    );
+    container.remove();
+    updateQuantity(productId, newQuantity);
+  } else {
+    updateQuantity(productId, newQuantity);
+    //update quantity label
+    if (0 < newQuantity && newQuantity < 1000) {
+      document.querySelector(`.js-quantity-label-${productId}`).innerHTML =
+        newQuantity;
+    }
+    //remove isEdittingquantityclass
+    const cartItemElm = document.querySelector(
+      `.js-cart-item-container-${productId}`
+    );
+    cartItemElm.classList.remove("is-editing-quantity");
+  }
+}
