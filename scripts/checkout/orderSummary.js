@@ -102,10 +102,8 @@ export function renderOrderSummary() {
       removeFromCart(productId);
       updateCartQuantity();
 
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`
-      );
-      container.remove();
+      //render the page again
+      renderOrderSummary();
       paymentSummary();
     });
   });
