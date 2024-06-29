@@ -1,4 +1,3 @@
-import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import {
   cart,
   removeFromCart,
@@ -6,6 +5,7 @@ import {
   updateQuantity,
 } from "../../data/cart.js";
 import {
+  calculateDeliveryDate,
   deliveryOptions,
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
@@ -26,10 +26,7 @@ export function renderOrderSummary() {
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-    const deliveryDate = today
-      .add(deliveryOption.deliveryDays, "day")
-      .format("dddd, MMMM D");
+    const deliveryDate = calculateDeliveryDate(deliveryOption);
 
     cartSummaryHtml += `
     <div class="cart-item-container js-cart-item-container-${
@@ -161,6 +158,7 @@ export function renderOrderSummary() {
       const { productId } = link.dataset;
       if (event.key === "Enter") {
         saveNewQuantity(productId);
+        paymentSummary();
         renderCheckOutHeader();
       }
     });
@@ -171,10 +169,7 @@ export function renderOrderSummary() {
     let deliveryOptionsHTMl = "";
 
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDate = today
-        .add(deliveryOption.deliveryDays, "day")
-        .format("dddd, MMMM D");
+      const deliveryDate = calculateDeliveryDate(deliveryOption);
       const price =
         deliveryOption.priceCents === 0
           ? "FREE"
