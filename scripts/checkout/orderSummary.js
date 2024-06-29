@@ -6,9 +6,13 @@ import {
   updateDeliveryOption,
   updateQuantity,
 } from "../../data/cart.js";
-import { deliveryOptions } from "../../data/deliveryOptions.js";
-import { products } from "../../data/products.js";
+import {
+  deliveryOptions,
+  getDeliveryOption,
+} from "../../data/deliveryOptions.js";
+import { getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
+import { paymentSummary } from "./paymentSummary.js";
 
 export function renderOrderSummary() {
   let cartSummaryHtml = "";
@@ -16,23 +20,11 @@ export function renderOrderSummary() {
 
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
-    let matchingProduct;
-
-    products.forEach((product) => {
-      if (product.id === productId) {
-        matchingProduct = product;
-      }
-    });
+    const matchingProduct = getProduct(productId);
 
     const deliveryOptionId = cartItem.deliveryId;
 
-    let deliveryOption;
-
-    deliveryOptions.forEach((option) => {
-      if (option.id === deliveryOptionId) {
-        deliveryOption = option;
-      }
-    });
+    const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     const today = dayjs();
     const deliveryDate = today
@@ -218,6 +210,7 @@ export function renderOrderSummary() {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      paymentSummary();
     });
   });
 }
