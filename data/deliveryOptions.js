@@ -13,12 +13,25 @@ export function getDeliveryOption(deliveryOptionId) {
 }
 
 export function calculateDeliveryDate(deliveryOption) {
-  const today = dayjs();
-  const deliveryDate = today
-    .add(deliveryOption.deliveryDays, "day")
-    .format("dddd, MMMM D");
+  let expectedDeliveryDate = deliveryOption.deliveryDays;
+  let actualDeliveryDate = dayjs();
 
-  return deliveryDate;
+  while (expectedDeliveryDate >= 0) {
+    //increase today's date by 1
+    actualDeliveryDate = actualDeliveryDate.add(1, "day");
+    if (!isWeekend(actualDeliveryDate.add(1, "day"))) {
+      expectedDeliveryDate -= 1;
+    }
+  }
+
+  return actualDeliveryDate.format("dddd, MMMM D");
+}
+
+export function isWeekend(date) {
+  if (date.format("dddd") === "Saturday" || date.format("dddd") === "Sunday") {
+    return true;
+  }
+  return false;
 }
 
 export const deliveryOptions = [
