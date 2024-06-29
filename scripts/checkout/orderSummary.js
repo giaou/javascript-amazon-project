@@ -106,6 +106,7 @@ export function renderOrderSummary() {
         `.js-cart-item-container-${productId}`
       );
       container.remove();
+      paymentSummary();
     });
   });
 
@@ -128,6 +129,7 @@ export function renderOrderSummary() {
       saveNewQuantity(productId);
       //update checkmark - the number of items in the header of the top
       updateCartQuantity();
+      paymentSummary();
     });
   });
 
