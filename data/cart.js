@@ -90,6 +90,7 @@ export function updateQuantity(productId, newQuantity) {
 }
 
 export function updateDeliveryOption(productId, deliveryOptionId) {
+  if(deliveryOptionId!='1'&&deliveryOptionId!='2'&&deliveryOptionId!='3') return;
   let matchingItem;
   cart.forEach((cartItem) => {
     if (cartItem.productId === productId) {
@@ -97,6 +98,8 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
     }
   });
 
-  matchingItem.deliveryId = deliveryOptionId;
-  saveToStorage();
+  if (matchingItem) {
+    matchingItem.deliveryId = deliveryOptionId;
+    saveToStorage();
+  } else return;
 }
