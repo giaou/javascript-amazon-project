@@ -47,7 +47,9 @@ export function renderOrderSummary() {
             <div class="product-price js-product-price-${matchingProduct.id}">
                 $${formatCurrency(matchingProduct.priceCents)}
             </div>
-            <div class="product-quantity js-product-quantity-${matchingProduct.id}">
+            <div class="product-quantity js-product-quantity-${
+              matchingProduct.id
+            }">
                 <span>
                 Quantity: <span class="quantity-label js-quantity-label-${
                   matchingProduct.id
@@ -64,9 +66,9 @@ export function renderOrderSummary() {
                 <span class="save-quantity-link js-save-quantity-link link-primary" data-product-id="${
                   matchingProduct.id
                 }">Save</span>
-                <span class="delete-quantity-link link-primary js-delete-link js-delete-link-${matchingProduct.id}" data-product-id="${
+                <span class="delete-quantity-link link-primary js-delete-link js-delete-link-${
                   matchingProduct.id
-                }">
+                }" data-product-id="${matchingProduct.id}">
                 Delete
                 </span>
             </div>
@@ -177,13 +179,17 @@ export function renderOrderSummary() {
 
       const isChecked = deliveryOption.id === cartItem.deliveryId;
       deliveryOptionsHTMl += `
-    <div class="delivery-option js-delivery-option"
+    <div class="delivery-option js-delivery-option js-delivery-option-${
+      matchingProduct.id
+    }-${deliveryOption.id}"
     data-product-id="${matchingProduct.id}" data-delivery-option-id="${
         deliveryOption.id
       }">
       <input type="radio" ${
         isChecked ? "checked" : ""
-      } class="delivery-option-input"
+      } class="delivery-option-input js-delivery-option-input-${
+        matchingProduct.id
+      }-${deliveryOption.id}"
       name="delivery-option-${matchingProduct.id}">
       <div>
         <div class="delivery-option-date">

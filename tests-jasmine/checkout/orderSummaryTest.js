@@ -26,7 +26,7 @@ describe("Test suite: renderOrderSummary", () => {
         {
           productId: productId1,
           quantity: 2,
-          deliveryId: "3", //by default
+          deliveryId: "1", //by default
         },
         {
           productId: productId2,
@@ -88,9 +88,9 @@ describe("Test suite: renderOrderSummary", () => {
     expect(cart.length).toEqual(1);
     expect(cart[0].productId).toEqual(productId2);
 
-    expect(
-      document.querySelector(`.js-product-name-${productId1}`)
-    ).toEqual(null);
+    expect(document.querySelector(`.js-product-name-${productId1}`)).toEqual(
+      null
+    );
 
     expect(
       document.querySelector(`.js-product-name-${productId2}`)
@@ -99,5 +99,26 @@ describe("Test suite: renderOrderSummary", () => {
     expect(
       document.querySelector(`.js-product-name-${productId2}`).innerText
     ).toContain(`${productName2}`);
+  });
+
+  it("update a delivery option", () => {
+    document.querySelector(`.js-delivery-option-${productId1}-3`).click();
+
+    expect(
+      document.querySelector(`.js-delivery-option-input-${productId1}-3`)
+        .checked
+    ).toEqual(true);
+
+    expect(cart.length).toEqual(2);
+    expect(cart[0].productId).toEqual(productId1);
+    expect(cart[0].deliveryId).toEqual("3");
+
+    expect(
+      document.querySelector(".js-payment-summary-shipping").innerText
+    ).toEqual("$14.98");
+
+    expect(
+      document.querySelector(".js-payment-summary-total").innerText
+    ).toEqual("$155.68");
   });
 });
