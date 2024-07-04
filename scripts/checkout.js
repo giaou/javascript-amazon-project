@@ -1,3 +1,4 @@
+import "../data/backend-practice.js";
 import "../data/cart-class.js";
 import { renderCheckOutHeader } from "./checkout/checkoutHeader.js";
 import { renderOrderSummary } from "./checkout/orderSummary.js";
